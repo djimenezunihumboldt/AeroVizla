@@ -1,102 +1,59 @@
-# Dashboard de Aviación Venezolana
+# Instrucciones para configurar la base de datos PostgreSQL
 
-**Autor:** Daniel Jimenez  
-**Universidad Alejandro de Humboldt – Ingeniería Informática**
+## 1. Instalar PostgreSQL
+- Descarga e instala PostgreSQL desde https://www.postgresql.org/download/
+- Durante la instalación, recuerda la contraseña del usuario `postgres`
 
----
-
-## Descripción del Proyecto
-Este proyecto es un **Dashboard interactivo** que visualiza datos reales de la aviación en Venezuela. Incluye métricas clave (KPIs), análisis de aerolíneas, puntualidad, rutas, flota y tráfico de aeropuertos, con **frontend** en HTML/CSS/JavaScript (Chart.js y Tailwind) y **backend** en Node.js/Express conectado a PostgreSQL.
-
-## Estructura del Repositorio
-
-```
-venezuela-aviation-dashboard/
-├── backend/                  # API y scripts de base de datos
-│   ├── index.js              # Servidor Express principal
-│   ├── routes_airports.js    # Endpoints de aeropuertos
-│   ├── setup_complete.sql    # Script de creación y seed de tablas PostgreSQL
-│   ├── .env                  # Variables de entorno (DB_URL, PORT)
-│   ├── package.json          # Dependencias y scripts del backend
-│   └── ...                   # Otros archivos (pruebas, utilidades)
-│
-├── css/                      # Estilos personalizados
-│   └── style.css             # Tailwind + ajustes propios
-│
-├── js/                       # Lógica del frontend
-│   ├── main.js               # Carga datos, render y navegación de vistas
-│   ├── api.js                # (opcional) llamadas a KPIs y aerolíneas
-│   ├── api-airports.js       # (opcional) llamado y gráfica de tráfico aeroportuario
-│   └── verificacion.js       # Scripts de verificación (si aplica)
-│
-├── index.html                # Estructura HTML de la SPA
-├── README.md                 # Documentación general (este archivo)
-└── favicon, assets, etc.
+## 2. Crear la base de datos
+Abre psql (PostgreSQL command line) y ejecuta:
+```sql
+CREATE DATABASE aviacion_venezuela;
 ```
 
-## Tecnologías Principales
-- **Backend:** Node.js, Express.js, pg (PostgreSQL driver)
-- **Base de Datos:** PostgreSQL 14+
-- **Frontend:** HTML5, CSS3 (Tailwind CSS), JavaScript ES6+, Chart.js
-- **Herramientas:** dotenv, CORS, npm
+## 3. Conectar a la base de datos
+```sql
+\c aviacion_venezuela
+```
 
-## Funcionamiento General
-1. **Base de Datos:**  
-   - `backend/setup_complete.sql` crea tablas (`aerolineas`, `aeropuertos`, `rutas`, `vuelos`) y las llena con datos de ejemplo.
-   - Conecta a PostgreSQL mediante variables en `.env`.
-2. **API REST (Express):**  
-   - `GET /api/kpis` → Retorna recuento de vuelos y suma de pasajeros.
-   - `GET /api/aerolineas` → Lista de aerolíneas.
-   - `GET /api/aeropuertos` → Lista de aeropuertos.
-   - `GET /api/aeropuertos/trafico` → Tráfico origen/destino por aeropuerto (subconsultas SQL).
-3. **Frontend SPA:**  
-   - **main.js** administra estado (`appState`), carga datos vía `fetch`, genera datos de muestra y crea gráficos con Chart.js.
-   - Navegación entre vistas (Visión General, Aerolíneas, Puntualidad, Rutas, Flota, Aeropuertos) con enlaces hash y `showView()`.
-   - Cada sección renderiza su gráfico o tabla según datos reales del backend.
-   - Se destruyen instancias de Chart.js antes de re-dibujar para evitar errores de canvas.
+## 4. Ejecutar el script de configuración
+Desde la línea de comandos, navega a la carpeta backend y ejecuta:
+```bash
+psql -U postgres -d aviacion_venezuela -f setup_complete.sql
+```
 
-## Instalación y Ejecución
+O copia y pega el contenido del archivo `setup_complete.sql` en psql.
 
-1. **Clonar repositorio**
-   ```bash
-   git clone <repo-url>
-   cd venezuela-aviation-dashboard
-   ```
+## 5. Verificar la instalación
+```sql
+SELECT 'Aerolíneas' as tabla, COUNT(*) as registros FROM aerolineas
+UNION ALL
+SELECT 'Aeropuertos', COUNT(*) FROM aeropuertos
+UNION ALL
+SELECT 'Rutas', COUNT(*) FROM rutas
+UNION ALL
+SELECT 'Vuelos', COUNT(*) FROM vuelos;
+```
 
-2. **Base de Datos**
-   - Crear base de datos `aviacion_venezuela` en PostgreSQL.
-   - Ejecutar:
-     ```bash
-     psql -U <usuario> -d aviacion_venezuela -f backend/setup_complete.sql
-     ```
-   - Configurar cadena de conexión en `backend/.env`:
-     ```ini
-     DATABASE_URL=postgres://user:pass@localhost:5432/aviacion_venezuela
-     PORT=3001
-     ```
+## 6. Configurar el archivo .env
+Edita el archivo `.env` en la carpeta backend con tus datos:
+```
+PORT=3001
+PGHOST=localhost
+PGUSER=postgres
+PGPASSWORD=tu_contraseña_aquí
+PGDATABASE=aviacion_venezuela
+PGPORT=5432
+```
 
-3. **Backend**
-   ```bash
-   cd backend
-   npm install
-   npm start      # Inicia servidor en http://localhost:3001
-   ```
+## 7. Instalar dependencias del backend
+```bash
+cd backend
+npm install
+```
 
-4. **Frontend**
-   ```bash
-   cd ..
-   # Usar Python HTTP server o cualquier servidor estático
-   python -m http.server 3000
-   ```
-   Abrir http://localhost:3000 en el navegador.
+## 8. Ejecutar el servidor
+```bash
+npm start
+```
 
-## Buenas Prácticas
-- En producción instalar Tailwind CSS vía CLI o PostCSS, no CDN.
-- Separar responsabilidades: mover llamadas API a módulos aparte si se expande.
-- Proteger variables sensibles en `.env` y no commitear credenciales.
-- Añadir validación y manejo de errores más robusto (frontend y backend).
-
----
-
-**Daniel Jimenez**  
-**Universidad Alejandro de Humboldt – Ingeniería Informática**
+¡Listo! Tu API estará disponible en http://localhost:3001 y tu dashboard podrá obtener datos reales de PostgreSQL.
