@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de API</title>
+</head>
+<body>
+    <h1>Prueba de API</h1>
+    <div id="resultado"></div>
+    
+    <script>
+        async function probarAPI() {
+            try {
+                console.log('Probando API...');
+                
+                // Probar KPIs
+                const kpisResponse = await fetch('http://localhost:3001/api/kpis');
+                const kpisData = await kpisResponse.json();
+                console.log('KPIs:', kpisData);
+                
+                // Probar aerolíneas
+                const airlinesResponse = await fetch('http://localhost:3001/api/aerolineas');
+                const airlinesData = await airlinesResponse.json();
+                console.log('Aerolíneas:', airlinesData);
+                
+                // Probar aeropuertos
+                const airportsResponse = await fetch('http://localhost:3001/api/aeropuertos');
+                const airportsData = await airportsResponse.json();
+                console.log('Aeropuertos:', airportsData);
+                
+                document.getElementById('resultado').innerHTML = `
+                    <h2>Datos cargados exitosamente:</h2>
+                    <p>KPIs: ${JSON.stringify(kpisData)}</p>
+                    <p>Aerolíneas: ${airlinesData.length} encontradas</p>
+                    <p>Aeropuertos: ${airportsData.length} encontrados</p>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultado').innerHTML = `Error: ${error.message}`;
+            }
+        }
+        
+        // Ejecutar prueba
+        probarAPI();
+    </script>
+</body>
+</html>

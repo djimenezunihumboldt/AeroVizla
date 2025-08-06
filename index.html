@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Aviación Venezolana</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Favicon Bandera de Venezuela -->
+    <link rel="icon" type="image/svg+xml" href="css/bandera-venezuela-favicon.svg">
+</head>
+<body>
+
+    <div class="min-h-screen">
+        <!-- Encabezado de la Aplicación -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                    <div class="flex items-center space-x-3 mb-2 md:mb-0">
+                        <img src="css/bandera-venezuela.svg" alt="Bandera de Venezuela" class="w-10 h-7 object-contain rounded shadow border border-gray-200" style="min-width:40px;">
+                        <h1 class="text-2xl font-bold text-gray-900">Dashboard de Aviación Venezolana</h1>
+                    </div>
+                    <nav class="flex flex-wrap justify-center md:justify-start space-x-4 md:space-x-6">
+                        <a href="#overview" class="nav-link">Visión General</a>
+                        <a href="#airlines" class="nav-link">Aerolíneas</a>
+                        <a href="#punctuality" class="nav-link">Puntualidad</a>
+                        <a href="#routes" class="nav-link">Rutas</a>
+                        <a href="#fleet" class="nav-link">Flota</a>
+                        <a href="#airports" class="nav-link">Aeropuertos</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido Principal -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            
+            <!-- Sección: Visión General -->
+            <section id="overview-section" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Visión General del Sector</h2>
+                    <p class="mt-2 text-lg text-gray-600">Esta sección ofrece una perspectiva de alto nivel sobre el estado de la aviación en Venezuela, presentando los indicadores clave de rendimiento (KPIs) más relevantes, la tendencia del tráfico de pasajeros a lo largo del año y una visión general de la satisfacción de los viajeros.</p>
+                </div>
+                
+                <!-- Tarjetas de KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="kpi-card">
+                        <h3 class="text-gray-500 font-medium">Vuelos Totales</h3>
+                        <p id="kpi-total-flights" class="text-4xl font-bold mt-2">0</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3 class="text-gray-500 font-medium">Pasajeros Totales</h3>
+                        <p id="kpi-total-passengers" class="text-4xl font-bold mt-2">0</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3 class="text-gray-500 font-medium">Retraso Promedio</h3>
+                        <p id="kpi-avg-delay" class="text-4xl font-bold mt-2">0 min</p>
+                    </div>
+                     <div class="kpi-card">
+                        <h3 class="text-gray-500 font-medium">Ingresos Totales (Est.)</h3>
+                        <p id="kpi-total-revenue" class="text-4xl font-bold mt-2">$0 M</p>
+                    </div>
+                </div>
+
+                <!-- Gráficos de Visión General -->
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                    <div class="lg:col-span-3 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4">Tráfico de Pasajeros Mensual</h3>
+                        <div class="chart-container">
+                            <canvas id="monthlyPassengersChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4">Satisfacción General del Pasajero</h3>
+                         <div class="chart-container">
+                            <canvas id="satisfactionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Análisis de Aerolíneas -->
+            <section id="airlines-section" class="hidden space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Análisis de Aerolíneas</h2>
+                    <p class="mt-2 text-lg text-gray-600">Esta sección permite comparar el rendimiento y las calificaciones de las principales aerolíneas venezolanas. Utiliza el filtro para seleccionar una aerolínea específica y obtener una visión detallada de su cuota de mercado y la percepción de sus servicios por parte de los pasajeros.</p>
+                </div>
+
+                <!-- Filtro de Aerolíneas -->
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <label for="airline-filter" class="block text-sm font-medium text-gray-700">Seleccionar Aerolínea:</label>
+                    <select id="airline-filter" class="mt-1 block w-full md:w-1/3 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                        <option value="all">Todas las Aerolíneas</option>
+                    </select>
+                </div>
+
+                <!-- Gráficos de Análisis de Aerolíneas -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4">Cuota de Mercado por Pasajeros</h3>
+                        <div class="chart-container">
+                            <canvas id="marketShareChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4">Calificaciones Promedio de Servicio</h3>
+                        <div class="chart-container">
+                            <canvas id="ratingsRadarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Análisis de Puntualidad -->
+            <section id="punctuality-section" class="hidden space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Análisis de Puntualidad</h2>
+                    <p class="mt-2 text-lg text-gray-600">Examina el rendimiento de puntualidad de las aerolíneas venezolanas. Este gráfico compara el porcentaje de vuelos a tiempo para cada aerolínea, ofreciendo una métrica clave sobre la eficiencia operativa.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Porcentaje de Vuelos a Tiempo por Aerolínea</h3>
+                    <div class="chart-container">
+                        <canvas id="punctualityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Explorador de Rutas -->
+            <section id="routes-section" class="hidden space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Explorador de Rutas</h2>
+                    <p class="mt-2 text-lg text-gray-600">Descubre las rutas aéreas más transitadas dentro de Venezuela. La tabla muestra las rutas ordenadas por el número total de pasajeros transportados. Haz clic en una ruta para ver sus detalles específicos, incluyendo las aerolíneas que la operan y el promedio de pasajeros y retrasos.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Top 10 Rutas Más Transitadas</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruta</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pasajeros Totales</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuelos Totales</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="routes-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Las filas se insertarán con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="route-detail-panel" class="detail-panel mt-6 hidden">
+                        <h3 class="text-xl font-semibold mb-2">Detalles de la Ruta: <span id="route-detail-name"></span></h3>
+                        <p class="text-gray-700"><span class="font-medium">Distancia:</span> <span id="route-detail-distance"></span> km</p>
+                        <p class="text-gray-700"><span class="font-medium">Tipo:</span> <span id="route-detail-type"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Aerolíneas que operan:</span> <span id="route-detail-airlines"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Pasajeros promedio por vuelo:</span> <span id="route-detail-avg-passengers"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Retraso promedio por vuelo:</span> <span id="route-detail-avg-delay"></span> min</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Flota de Aerolíneas -->
+            <section id="fleet-section" class="hidden space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Flota de Aerolíneas</h2>
+                    <p class="mt-2 text-lg text-gray-600">Esta sección proporciona una visión general de la composición de la flota de las aerolíneas venezolanas. Explora el número total de aeronaves por aerolínea y la distribución por tipo de avión, lo que puede dar una idea de sus capacidades operativas.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Composición de la Flota por Aerolínea</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aerolínea</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Aeronaves</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipos Comunes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fleet-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Las filas se insertarán con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Distribución de Aeronaves por Tipo</h3>
+                    <div class="chart-container">
+                        <canvas id="aircraftTypeChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Rendimiento de Aeropuertos -->
+            <section id="airports-section" class="hidden space-y-8">
+                 <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Rendimiento de Aeropuertos</h2>
+                    <p class="mt-2 text-lg text-gray-600">Analiza el tráfico y el volumen de operaciones en los principales aeropuertos de Venezuela. Este gráfico muestra qué aeropuertos gestionan el mayor número de pasajeros. Haz clic en un aeropuerto para ver sus detalles específicos, incluyendo sus rutas más populares y el tráfico total.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Tráfico de Pasajeros por Aeropuerto</h3>
+                    <div class="chart-container">
+                        <canvas id="airportTrafficChart"></canvas>
+                    </div>
+                     <div id="airport-detail-panel" class="detail-panel mt-6 hidden">
+                        <h3 class="text-xl font-semibold mb-2">Detalles del Aeropuerto: <span id="airport-detail-name"></span></h3>
+                        <p class="text-gray-700"><span class="font-medium">Código IATA:</span> <span id="airport-detail-iata"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Ciudad/Estado:</span> <span id="airport-detail-city-state"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Tipo de Aeropuerto:</span> <span id="airport-detail-type"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Pasajeros Totales (Origen):</span> <span id="airport-detail-total-origin-passengers"></span></p>
+                        <p class="text-gray-700"><span class="font-medium">Pasajeros Totales (Destino):</span> <span id="airport-detail-total-dest-passengers"></span></p>
+                        <h4 class="font-medium mt-4">Top Rutas desde este Aeropuerto:</h4>
+                        <ul id="airport-detail-top-routes" class="list-disc list-inside text-gray-700"></ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script principal de JavaScript -->
+    <!-- main.js ahora carga todos los datos y renderiza visualizaciones -->
+    <script src="js/main.js"></script>
+</body>
+</html>
