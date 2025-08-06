@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 140">
+  <!-- Amarillo -->
+  <rect width="210" height="46.67" y="0" fill="#FCD116"/>
+  <!-- Azul -->
+  <rect width="210" height="46.67" y="46.67" fill="#003893"/>
+  <!-- Rojo -->
+  <rect width="210" height="46.66" y="93.34" fill="#CF2228"/>
+  <!-- 7 estrellas blancas en arco -->
+  <g fill="#fff">
+    <!-- Arco de estrellas más cerca de la franja amarilla, como en la versión anterior pero subido -->
+    <polygon points="105,54 107,59 112,59 108,62 110,67 105,64 100,67 102,62 98,59 103,59"/>
+    <polygon points="120,57 122,62 127,62 123,65 125,70 120,67 115,70 117,65 113,62 118,62"/>
+    <polygon points="133,66 135,71 140,71 136,74 138,79 133,76 128,79 130,74 126,71 131,71"/>
+    <polygon points="139,80 141,85 146,85 142,88 144,93 139,90 134,93 136,88 132,85 137,85"/>
+    <polygon points="91,57 93,62 98,62 94,65 96,70 91,67 86,70 88,65 84,62 89,62"/>
+    <polygon points="78,66 80,71 85,71 81,74 83,79 78,76 73,79 75,74 71,71 76,71"/>
+    <polygon points="72,80 74,85 79,85 75,88 77,93 72,90 67,93 69,88 65,85 70,85"/>
+  </g>
+</svg>
