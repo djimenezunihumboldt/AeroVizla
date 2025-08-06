@@ -1,0 +1,19 @@
+{
+  "name": "venezuela-aviation-backend",
+  "version": "1.0.0",
+  "description": "API para Dashboard de Aviación Venezolana (Node.js + Express + PostgreSQL)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

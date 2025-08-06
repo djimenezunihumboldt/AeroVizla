@@ -1,0 +1,92 @@
+-- Script completo para inicializar la base de datos con tablas y datos de ejemplo
+-- ARCHIVO ESPECÍFICO PARA POSTGRESQL
+-- Crear la base de datos (ejecutar como superusuario)
+-- CREATE DATABASE aviacion_venezuela;
+
+-- Conectar a la base de datos aviacion_venezuela y ejecutar lo siguiente:
+
+-- Tabla de aerolíneas
+CREATE TABLE IF NOT EXISTS aerolineas (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- Tabla de aeropuertos
+CREATE TABLE IF NOT EXISTS aeropuertos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    codigo_iata VARCHAR(5) NOT NULL UNIQUE,
+    ciudad_estado VARCHAR(100),
+    tipo VARCHAR(50)
+);
+
+-- Tabla de rutas
+CREATE TABLE IF NOT EXISTS rutas (
+    id SERIAL PRIMARY KEY,
+    origen_id INTEGER REFERENCES aeropuertos(id),
+    destino_id INTEGER REFERENCES aeropuertos(id),
+    distancia_km INTEGER,
+    tipo VARCHAR(50)
+);
+
+-- Tabla de vuelos
+CREATE TABLE IF NOT EXISTS vuelos (
+    id SERIAL PRIMARY KEY,
+    aerolinea_id INTEGER REFERENCES aerolineas(id),
+    ruta_id INTEGER REFERENCES rutas(id),
+    pasajeros_origen INTEGER,
+    pasajeros_destino INTEGER,
+    fecha DATE,
+    retraso_minutos INTEGER
+);
+
+-- Insertar datos de ejemplo
+-- Aerolíneas
+INSERT INTO aerolineas (nombre) VALUES
+  ('Conviasa'),
+  ('Avior Airlines'),
+  ('Laser Airlines'),
+  ('Rutaca Airlines'),
+  ('Aserca Airlines')
+ON CONFLICT DO NOTHING;
+
+-- Aeropuertos
+INSERT INTO aeropuertos (nombre, codigo_iata, ciudad_estado, tipo) VALUES
+  ('Aeropuerto Internacional de Maiquetía Simón Bolívar', 'CCS', 'Caracas, Distrito Capital', 'Internacional'),
+  ('Aeropuerto Internacional La Chinita', 'MAR', 'Maracaibo, Zulia', 'Internacional'),
+  ('Aeropuerto Internacional Arturo Michelena', 'VLN', 'Valencia, Carabobo', 'Internacional'),
+  ('Aeropuerto Internacional de Barcelona', 'BLA', 'Barcelona, Anzoátegui', 'Internacional'),
+  ('Aeropuerto Internacional Jacinto Lara', 'BRM', 'Barquisimeto, Lara', 'Internacional')
+ON CONFLICT (codigo_iata) DO NOTHING;
+
+-- Rutas
+INSERT INTO rutas (origen_id, destino_id, distancia_km, tipo) VALUES
+  (1, 2, 520, 'Nacional'),
+  (1, 3, 130, 'Nacional'),
+  (2, 3, 390, 'Nacional'),
+  (1, 4, 320, 'Nacional'),
+  (3, 5, 350, 'Nacional')
+ON CONFLICT DO NOTHING;
+
+-- Vuelos
+INSERT INTO vuelos (aerolinea_id, ruta_id, pasajeros_origen, pasajeros_destino, fecha, retraso_minutos) VALUES
+  (1, 1, 150, 140, '2025-07-01', 10),
+  (2, 2, 120, 115, '2025-07-02', 5),
+  (3, 3, 100, 98, '2025-07-03', 0),
+  (4, 4, 130, 128, '2025-07-04', 15),
+  (5, 5, 110, 109, '2025-07-05', 7),
+  (1, 2, 145, 138, '2025-07-06', 20),
+  (2, 3, 110, 105, '2025-07-07', 0),
+  (3, 1, 95, 92, '2025-07-08', 12),
+  (4, 5, 125, 120, '2025-07-09', 8),
+  (5, 4, 105, 100, '2025-07-10', 3)
+ON CONFLICT DO NOTHING;
+
+-- Verificar que los datos se insertaron correctamente
+SELECT 'Aerolíneas' as tabla, COUNT(*) as registros FROM aerolineas
+UNION ALL
+SELECT 'Aeropuertos', COUNT(*) FROM aeropuertos
+UNION ALL
+SELECT 'Rutas', COUNT(*) FROM rutas
+UNION ALL
+SELECT 'Vuelos', COUNT(*) FROM vuelos;

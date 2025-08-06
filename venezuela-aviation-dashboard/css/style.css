@@ -1,0 +1,64 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FDFBF7; /* Un tono crema suave para el fondo */
+}
+
+/* Estilos para los enlaces de navegación */
+.nav-link {
+    transition: color 0.3s, border-bottom-color 0.3s;
+    color: #6B7280; /* Gris medio para enlaces inactivos */
+    border-bottom: 2px solid transparent;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+}
+
+/* Estilo para el enlace de navegación activo */
+.nav-link.active {
+    color: #3B82F6; /* Azul vibrante para el enlace activo */
+    border-bottom-color: #3B82F6;
+}
+
+/* Estilos para las tarjetas de KPIs */
+.kpi-card {
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto hover para las tarjetas de KPIs */
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los contenedores de gráficos */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px; /* Ancho máximo para legibilidad en pantallas grandes */
+    margin-left: auto;
+    margin-right: auto;
+    height: 380px; /* Altura base para los gráficos */
+    max-height: 450px; /* Altura máxima para evitar gráficos excesivamente altos */
+}
+
+/* Ajustes de altura para gráficos en pantallas más pequeñas */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+        max-height: 350px;
+    }
+}
+
+/* Estilos para los paneles de detalle dinámicos */
+.detail-panel {
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #3B82F6; /* Borde de acento azul */
+}
