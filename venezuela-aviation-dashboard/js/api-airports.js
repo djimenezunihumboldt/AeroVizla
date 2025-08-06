@@ -1,7 +1,7 @@
 // Configura aquí la URL base del backend:
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001'
-    : 'https://proyecto-1-del-portafolio-1.onrender.com';
+    : 'https://aerovizla.onrender.com';
 
 // Función para cargar tráfico de pasajeros por aeropuerto y graficar
 async function cargarTraficoAeropuertos() {
